@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ekspedisi Sistem Periodik Unsur — Kelas X</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fa;--surface:#ffffff;--surface2:#edf1f7;--text:#202938;--muted:#5a677d;
+  --line:#dce3ed;--primary:#4263d8;--primary-soft:#e9edff;
+  --good:#16834b;--goodbg:#eaf8f0;--warn:#a96809;--warnbg:#fff5df;--bad:#b32a24;--badbg:#fff0ef;
+  --shadow:0 8px 24px rgba(39,52,76,.07);--r:17px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}
+body{font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;font-weight:500;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.title,.pill,.btn,.property-switch button,.property-cell,.eyebrow{font-family:"Space Grotesk","Inter","Segoe UI",system-ui,sans-serif;font-weight:700}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.app{width:min(1400px,100%);margin:auto;padding:12px 16px}
+.topbar{height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--primary);color:white;display:grid;place-items:center;font-size:12px;font-weight:800}
+.eyebrow{font-size:10px;line-height:1.2;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-weight:800}
+.title{font-size:18px;font-weight:800;letter-spacing:-.025em;white-space:nowrap}
+.subtitle{font-size:11px;color:var(--muted)}
+.progress{height:5px;background:#e1e6ee;border-radius:99px;overflow:hidden;margin-bottom:9px}
+.progress span{display:block;height:100%;width:14%;background:var(--primary);transition:.3s}
+.layout{display:block;height:calc(100vh - 94px);min-height:560px}
+.nav{display:none}
+.nav button{width:100%;border:0;background:transparent;text-align:left;padding:8px 10px;border-radius:11px;color:var(--muted);font-size:12px;font-weight:700;margin:1px 0;line-height:1.2}
+.nav button.active{background:var(--primary-soft);color:var(--primary)}
+.main{min-width:0;min-height:0;height:100%;overflow:hidden}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);margin-bottom:9px}
+.hero{height:100%;display:grid;grid-template-columns:1.08fr .92fr;gap:9px}
+.hero>.card{margin:0;min-height:0}
+h1,h2,h3,p{margin-top:0}
+.hero h1{font-size:clamp(28px,3.1vw,44px);line-height:1.03;letter-spacing:-.055em;margin:8px 0}
+.lead{font-size:13px;color:var(--muted);line-height:1.55}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.choice{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:9px 11px;margin:5px 0;font-size:12px;font-weight:700;transition:.15s}
+.choice:hover{border-color:var(--primary);transform:translateY(-1px)}
+.choice.correct{border-color:var(--good);background:var(--goodbg)}
+.choice.wrong{border-color:var(--bad);background:var(--badbg)}
+.feedback{padding:10px;border-radius:11px;margin-top:8px;font-size:12px;line-height:1.5;display:none}
+.feedback.show{display:block}.feedback.good{background:var(--goodbg);color:#12683b}
+.feedback.warn{background:var(--warnbg);color:#855107}.feedback.bad{background:var(--badbg);color:#8d241e}
+.pill{display:inline-flex;padding:5px 8px;border-radius:99px;background:var(--surface2);font-size:10px;font-weight:800;color:var(--muted)}
+.section-title{font-size:21px;font-weight:800;letter-spacing:-.035em;margin:6px 0}
+.small{font-size:11px;color:var(--muted);line-height:1.5}
+.muted{color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:9px 12px;border-radius:11px;font-size:12px;font-weight:800}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.atom-stage{min-height:230px;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:14px;background:radial-gradient(circle at center,#fff 0,#f5f7fa 66%,#edf0f5 100%)}
+.atom{width:230px;height:230px;border-radius:50%;position:relative;display:grid;place-items:center}
+.nucleus{width:42px;height:42px;border-radius:50%;background:#2d3a50;color:white;display:grid;place-items:center;font-size:12px;font-weight:800;z-index:4;box-shadow:0 6px 15px rgba(0,0,0,.14)}
+.shell{position:absolute;border:2px solid #b5c0cf;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);animation:appear .35s ease both}
+.shell.s1{width:64px;height:64px}.shell.s2{width:112px;height:112px}.shell.s3{width:160px;height:160px}.shell.s4{width:208px;height:208px}
+.electron{position:absolute;width:11px;height:11px;border-radius:50%;background:#4263d8;box-shadow:0 2px 5px rgba(66,99,216,.3);z-index:3}
+.atom-label{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.92);border:1px solid var(--line);padding:6px 8px;border-radius:9px;font-size:10px;font-weight:700}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:9px}.atom-card{border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--surface)}
+.mini-atom{height:210px;display:grid;place-items:center;overflow:hidden}.mini-atom .atom{transform:scale(.72)}
+.slider-wrap{margin-top:9px}.slider{width:100%;accent-color:var(--primary)}
+.cause{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:9px 0}
+.cause span{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);font-size:10px;font-weight:700}
+.cause b{color:var(--primary);font-size:11px}
+.metric{font-size:28px;font-weight:800;letter-spacing:-.05em}
+.meter{height:9px;background:var(--surface2);border-radius:99px;overflow:hidden}.meter span{display:block;height:100%;width:50%;background:var(--primary);transition:.4s}
+.periodic-grid{display:grid;grid-template-columns:repeat(18,minmax(26px,1fr));gap:3px;overflow:auto;padding-bottom:5px}
+.element{min-height:43px;border:1px solid var(--line);border-radius:7px;padding:3px;background:var(--surface);cursor:pointer;text-align:center}
+.element:hover{transform:translateY(-1px)}.element .z{font-size:8px;color:var(--muted)}.element .sym{font-size:12px;font-weight:800}.element.active{outline:2px solid var(--primary)}
+.quiz-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:8px 0;font-size:11px}.quiz-row:last-child{border:0}
+input[type=number],input[type=text],textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+textarea{min-height:60px;resize:vertical}
+.footer{display:flex;justify-content:space-between;gap:8px;margin-top:9px}
+
+/* ===== PETA TREN — compact fit-to-slide ===== */
+.trend-summary-screen{
+  overflow:hidden;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding:10px 14px 12px;
+}
+.trend-summary-screen .pill{flex:0 0 auto}
+.trend-summary-screen .section-title{font-size:19px;margin:4px 0;flex:0 0 auto}
+.trend-summary-screen .lead{font-size:12px;margin-bottom:6px;flex:0 0 auto}
+
+.trend-map-card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--surface2);
+  padding:8px 10px 8px;
+  flex:1 1 auto;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+.trend-legend-top{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px;flex:0 0 auto}
+.trend-direction{border-radius:8px;padding:5px 9px;background:var(--surface);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--text)}
+.trend-direction b{font-weight:800}
+.trend-direction span{font-weight:900;color:var(--primary);white-space:nowrap;font-size:10px}
+
+.trend-table-area{
+  position:relative;
+  padding:6px 40px 6px;
+  flex:1 1 auto;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.trend-periodic-grid{
+  display:grid;
+  grid-template-columns:repeat(18,minmax(0,1fr));
+  grid-template-rows:repeat(7,1fr);
+  gap:3px;
+  position:relative;
+  z-index:2;
+  flex:1 1 auto;
+  min-height:0;
+  max-height:230px;
+}
+.trend-element{
+  height:100%;
+  min-height:0;
+  border:1px solid #c8d3e2;
+  border-radius:6px;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  position:relative;
+  box-shadow:0 1px 2px rgba(30,45,70,.05);
+}
+.trend-element span{font-size:12px;font-weight:900;color:#1c2637}
+.trend-element small{font-size:7px;font-weight:700;color:#5f6d82;margin-top:1px}
+
+.trend-fblock{display:grid;grid-template-columns:36px repeat(14,minmax(0,1fr));gap:3px;margin-top:3px;position:relative;z-index:2;flex:0 0 auto}
+.trend-fblock .trend-element{height:26px}
+.trend-fblock .trend-element span{font-size:10px}
+.trend-fblock .trend-element small{font-size:6px}
+.f-name{font-size:8px;font-weight:900;color:#4a566b;display:flex;align-items:center;justify-content:center;letter-spacing:.02em}
+
+.trend-side-label{
+  position:absolute;font-size:8px;font-weight:900;letter-spacing:.04em;
+  background:rgba(255,255,255,.95);border:1px solid var(--line);
+  border-radius:5px;padding:5px 3px;z-index:5;
+  writing-mode:vertical-rl;white-space:nowrap;
+  box-shadow:0 1px 3px rgba(30,45,70,.08)
+}
+.trend-side-label.top{right:4px;top:14px;color:#3a55b8}
+.trend-side-label.bottom{left:4px;bottom:14px;color:#a05f18}
+
+.trend-arrow{position:absolute;font-size:38px;font-weight:900;line-height:1;z-index:4;pointer-events:none;text-shadow:0 2px 4px rgba(0,0,0,.08)}
+.arrow-up-right{right:4px;top:40px;color:#4a63c8}
+.arrow-down-left{left:4px;bottom:40px;color:#d98a2b}
+
+.trend-arrow-label{
+  position:absolute;font-size:8px;font-weight:900;z-index:5;white-space:nowrap;
+  background:rgba(255,255,255,.95);border:1px solid var(--line);
+  padding:3px 6px;border-radius:5px;box-shadow:0 1px 3px rgba(30,45,70,.08)
+}
+.left-label{left:0;top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:left top;color:#a05f18}
+.right-label{right:0;top:50%;transform:rotate(90deg) translateX(50%);transform-origin:right top;color:#3a55b8}
+
+.trend-key{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;padding-top:5px;font-size:10px;color:#44516a;font-weight:600;flex:0 0 auto}
+.trend-key span{display:inline-flex;align-items:center;gap:5px}
+.trend-key b{font-weight:800;color:#2a3549}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#4263d8}
+.dot.energy{background:#6574c8}
+.dot.metal{background:#e49a42}
+
+.reflect-bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:7px;
+  flex:0 0 auto;
+}
+.meaning-card{box-shadow:none;background:var(--primary-soft);margin:0;padding:8px 10px}
+.meaning-card .cause{margin:4px 0;gap:4px}
+.meaning-card .cause span{padding:4px 6px;font-size:9px}
+.meaning-card .cause b{font-size:10px}
+.meaning-card .small{font-size:10px;line-height:1.35}
+
+.reflection{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;align-items:start}
+.reflection label{font-size:10px;font-weight:800;color:var(--text)}
+.reflection textarea{min-height:34px;padding:6px;font-size:10px}
+.reflection label:nth-of-type(1){grid-column:1}.reflection label:nth-of-type(2){grid-column:2}
+.reflection textarea:nth-of-type(1){grid-column:1}.reflection textarea:nth-of-type(2){grid-column:2}
+
+.trend-note{margin-top:5px;text-align:center;font-size:10px;color:#5a677d;flex:0 0 auto}
+
+.summary-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;font-size:11px}
+.summary-table th,.summary-table td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:center}
+.summary-table th{background:var(--surface2);font-weight:800}.summary-table tr:last-child td{border-bottom:0}
+.arrow-down{font-weight:900;color:#3158c9}.arrow-right{font-weight:900;color:#3158c9}
+.trend-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 7px;border-radius:8px;background:var(--primary-soft);color:var(--primary);font-size:10px;font-weight:800}
+.one-screen{height:100%;overflow:hidden}
+.fullscreen-btn-active{background:var(--primary-soft);color:var(--primary);border-color:#cdd7ff}
+:fullscreen{background:var(--bg)}
+:fullscreen .app{width:100%;max-width:1500px;height:100vh;padding:12px 18px}
+:fullscreen .layout{height:calc(100vh - 94px)}
+:fullscreen .main{overflow:hidden}
+
+@keyframes appear{from{opacity:0;transform:translate(-50%,-50%) scale(.88)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+.slide-nav{
+  position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:8px;z-index:50;
+  background:rgba(255,255,255,.94);border:1px solid var(--line);
+  border-radius:14px;padding:5px 6px;box-shadow:0 8px 24px rgba(39,52,76,.13);
+  backdrop-filter:blur(10px)
+}
+.slide-nav button{
+  border:0;border-radius:10px;padding:7px 12px;font-size:11px;font-weight:800;
+  color:#fff;background:#4263d8;min-width:72px
+}
+.slide-nav button.prev{background:#718096}.slide-nav button:disabled{opacity:.32;cursor:not-allowed}
+.slide-nav .counter{font-size:10px;font-weight:800;color:var(--muted);padding:0 4px;min-width:44px;text-align:center}
+.slide-nav .next{background:#3158c9}
+@media(max-width:620px){
+  .slide-nav{bottom:9px}
+  .slide-nav button{min-width:62px;padding:7px 9px;font-size:10px}
+  .slide-nav .counter{min-width:38px}
+  .main{padding-bottom:70px}
+}
+/* Tombol fixed di desktop: kasih ruang bawah pada slide peta tren */
+@media(min-width:621px){
+  .trend-summary-screen{padding-bottom:56px}
+}
+
+@media(max-width:900px){
+ .layout{grid-template-columns:1fr;height:auto;min-height:0}.nav{display:flex;overflow:auto;position:static}.nav button{white-space:nowrap;width:auto}.main{overflow:visible}.hero{height:auto}
+ .trend-legend-top{grid-template-columns:repeat(2,1fr)}
+ .trend-periodic-grid{min-width:720px;max-height:none}
+ .trend-table-area{overflow-x:auto}
+ .reflect-bottom{grid-template-columns:1fr}
+ .reflection{grid-template-columns:1fr}
+ .reflection label,.reflection textarea{grid-column:1!important}
+}
+@media(max-width:620px){
+ .app{padding:9px}.title{font-size:16px}.topbar{height:48px}.grid2,.compare,.hero{grid-template-columns:1fr}.grid3{grid-template-columns:repeat(2,1fr)}
+ .atom-stage{min-height:210px}.mini-atom{height:190px}
+}
+
+/* Mission 04 compact IFP layout */
+.ion-slide{padding-bottom:12px}
+.ion-compare{gap:8px;align-items:stretch}
+.ion-card{padding:9px;min-width:0;display:flex;flex-direction:column}
+.ion-head{display:flex;justify-content:space-between;align-items:center;gap:6px;min-height:31px}
+.ion-head b{font-size:17px;letter-spacing:-.03em}
+.ion-stage{min-height:165px;height:165px;margin-top:6px;border-radius:12px}
+.ion-stage .atom{transform:scale(.64)}
+.ion-note{font-size:10px;color:var(--muted);margin:5px 0 6px;line-height:1.35}
+.ion-btn{align-self:flex-start;padding:7px 10px;font-size:10px}
+.ion-feedback{font-size:9px;padding:6px;margin-top:5px;line-height:1.35}
+.logic-card{background:var(--surface2);box-shadow:none}
+.logic-stack{display:grid;gap:7px;margin:9px 0}
+.logic-stack>div{display:grid;grid-template-columns:auto auto 12px auto 12px 1fr;gap:4px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:7px;font-size:9px;line-height:1.25}
+.logic-stack strong{font-size:15px}.logic-stack b{color:var(--primary);text-align:center}
+.ion-key{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:7px;border-radius:9px;background:var(--primary-soft);font-size:9px;font-weight:800;color:var(--primary)}
+.ion-quiz{margin-top:8px}.ion-quiz p{font-size:10px;margin-bottom:5px;line-height:1.3}
+.ion-quiz .choice{padding:6px 8px;margin:3px 0;font-size:9px}
+.ion-takeaway{margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);font-size:10px;line-height:1.4;color:var(--muted)}
+.property-switch{display:flex;gap:7px;flex-wrap:wrap;margin:6px 0}
+.property-switch button{border:1px solid var(--line);background:var(--surface);padding:8px 12px;border-radius:10px;font-size:11px;font-weight:800;color:var(--muted)}
+.property-switch button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.property-table-wrap{border:1px solid var(--line);border-radius:12px;padding:6px;background:var(--surface2);overflow:hidden}
+.property-grid{display:grid;grid-template-columns:repeat(18,minmax(38px,1fr));grid-template-rows:repeat(7,43px);gap:3px;min-width:760px}
+.property-cell{width:100%;height:100%;border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.property-cell:hover{border-color:var(--primary);transform:translateY(-1px)}
+.property-cell.selected{outline:2px solid var(--primary);background:var(--primary-soft)}
+.property-cell.missing{opacity:.72}
+.property-cell .pz{font-size:7px;color:var(--muted)}
+.property-cell .ps{font-size:14px;font-weight:900;line-height:1}
+.property-cell .pv{font-size:10px;color:var(--primary);font-weight:900;margin-top:3px;white-space:nowrap}
+.property-cell .both-line{font-size:8px;font-weight:900;margin-top:2px;line-height:1.05;white-space:nowrap}
+.fblock{margin-top:5px;display:grid;gap:3px;min-width:760px}
+.fblock-row{display:grid;grid-template-columns:38px repeat(14,minmax(38px,1fr));gap:3px}
+.fblock-row>div{min-height:34px}
+.flabel{display:grid;place-items:center;font-size:8px;font-weight:800;color:var(--muted)}
+.property-info{display:grid;grid-template-columns:.85fr 1.15fr;gap:8px;margin-top:6px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.property-info .big{font-size:18px;font-weight:900}
+.trend-map{display:grid;grid-template-columns:1fr auto 1fr;gap:7px;align-items:center;margin-top:6px}
+.definition{padding:6px 8px;border-radius:9px;background:var(--surface2);font-size:9px;line-height:1.3}
+.trend-map .arrow{font-size:18px;font-weight:900;color:var(--primary)}
+
+/* ===== SPU lengkap — 118 unsur, tetap compact dan harmonis ===== */
+.full-periodic-screen{display:flex;flex-direction:column;height:100%;overflow:hidden}
+.full-periodic-screen .periodic-wrap{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:7px;overflow:hidden}
+.full-periodic-grid{display:grid;grid-template-columns:repeat(18,minmax(0,1fr));grid-template-rows:repeat(7,39px);gap:3px;min-width:760px}
+.full-periodic-grid .element{min-height:0;height:39px;padding:2px}
+.full-periodic-grid .element .z{font-size:7px}.full-periodic-grid .element .sym{font-size:12px}
+.full-fblock{display:grid;grid-template-columns:42px repeat(14,minmax(0,1fr));gap:3px;margin-top:4px;min-width:760px}
+.full-fblock .element{height:32px;min-height:32px}.full-fblock .element .sym{font-size:11px}.full-fblock .element .z{font-size:6px}
+.full-f-label{display:grid;place-items:center;font-size:8px;font-weight:800;color:var(--muted)}
+.periodic-info{margin-top:7px;padding:8px 10px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.periodic-info .selected-symbol{font-family:"Space Grotesk";font-size:28px;font-weight:700;line-height:1}
+.periodic-info .selected-name{font-size:11px;color:var(--muted);margin-top:2px}
+.periodic-info .info-facts{display:flex;flex-wrap:wrap;gap:5px}.periodic-info .info-facts span{padding:5px 7px;background:var(--surface);border:1px solid var(--line);border-radius:7px;font-size:9px;font-weight:700}
+.periodic-hint{margin-top:5px;font-size:9px;color:var(--muted)}
+
+/* property map remains one interactive slide */
+.property-screen{display:flex;flex-direction:column;height:100%;overflow:hidden}
+.property-screen .property-table-wrap{flex:1 1 auto;min-height:0}
+.property-screen .property-grid{grid-template-rows:repeat(7,40px)}
+.property-screen .property-cell .ps{font-family:"Space Grotesk";font-size:13px}
+.property-screen .property-cell .pv{font-size:9px}
+.property-screen .property-cell .both-line{font-size:7px}
+
+/* final trend map: stronger visual arrows like the reference */
+.trend-map-card{position:relative}
+.trend-corner-arrow{position:absolute;font-family:"Space Grotesk";font-size:42px;font-weight:700;line-height:1;z-index:6;pointer-events:none}
+.trend-corner-arrow.up{right:18px;top:78px;color:#5268c9}.trend-corner-arrow.down{left:18px;bottom:82px;color:#d99538}
+.trend-big-label{position:absolute;z-index:6;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:7px;padding:4px 7px;font-size:8px;font-weight:800;white-space:nowrap}
+.trend-big-label.up{right:12px;top:55px}.trend-big-label.down{left:12px;bottom:58px}
+@media(max-width:900px){.full-periodic-grid,.full-fblock{min-width:760px}.full-periodic-screen{height:auto;overflow:visible}.periodic-wrap{overflow-x:auto!important}}
+
+/* Mission 03 — compact 3-column IFP layout */
+.radius-compare{grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px;align-items:stretch}
+.radius-card{min-height:0;padding:14px;display:flex;flex-direction:column}
+.radius-atom{height:154px;display:flex;align-items:center;justify-content:center;margin:2px 0 1px}
+.radius-atom .mini-atom{transform:scale(.68)}
+.radius-card .metric{font-size:27px;line-height:1;margin-top:1px}
+.radius-card .small{margin-top:5px}
+.radius-experiment{background:var(--surface2);border-color:#cfdaf2}
+.experiment-top{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:7px}
+.experiment-config{display:flex;justify-content:space-between;align-items:center;font-size:19px;font-weight:800;margin:0 2px 5px}
+.experiment-config span:last-child{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.radius-experiment .slider{margin:4px 0 0}
+.slider-scale{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;font-weight:800;margin-top:1px}
+.compact-cause{gap:4px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+.compact-cause span{padding:5px 7px;font-size:10px}
+.compact-cause b{font-size:14px}
+.radius-predict{margin-top:7px;padding:7px 8px;border:1px solid #d8e1ef;border-radius:10px;background:#f7f9fc;font-size:10px;line-height:1.3}.radius-predict b{display:block;margin-bottom:4px}.radius-predict .choice{display:inline-block;width:auto;margin:2px 3px 0 0;padding:5px 9px;font-size:10px}
+.radius-quiz{margin-top:8px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.radius-quiz p{margin:0 8px 0 0;flex:1;min-width:420px}
+.radius-pulse{animation:radiusPulse .42s ease}
+@keyframes radiusPulse{0%{transform:scale(.96);opacity:.65}100%{transform:scale(1);opacity:1}}
+@media(max-width:1050px){.radius-compare{grid-template-columns:1fr 1fr}.radius-experiment{grid-column:1/-1}.radius-experiment .radius-atom{height:150px}.radius-quiz p{min-width:100%}}
+
+/* FINAL HARMONIZATION: trend annotations are outside the element cells */
+.trend-map-card{position:relative}
+.trend-corner-arrow,.trend-big-label,.trend-side-label,.trend-arrow,.trend-arrow-label{display:none!important}
+.trend-annotation-top,.trend-annotation-bottom{display:flex;align-items:center;justify-content:center;gap:8px;flex:0 0 auto}
+.trend-annotation-top{margin:0 24px 5px;padding:4px 10px;border:1px solid #cfd9f5;border-radius:8px;background:#f5f7ff;color:#4263d8}
+.trend-annotation-bottom{margin:5px 24px 0;padding:4px 10px;border:1px solid #efd9b8;border-radius:8px;background:#fff8ed;color:#a96809}
+.trend-annotation-top .arrow,.trend-annotation-bottom .arrow{font-family:"Space Grotesk";font-size:22px;font-weight:900;line-height:1}
+.trend-annotation-top b,.trend-annotation-bottom b{font-size:10px;letter-spacing:.01em}
+.trend-table-area{padding:2px 18px 2px!important}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="logo">SPU</div><div><div class="eyebrow">Kimia Kelas X</div><div class="title">Ekspedisi Sistem Periodik Unsur</div></div></div>
+  <div style="display:flex;align-items:center;gap:7px">
+    <button id="fullscreenBtn" class="btn" type="button" title="Mode fullscreen" aria-label="Aktifkan fullscreen">⛶ Fullscreen</button>
+    <div class="pill" id="score">0 XP</div>
+  </div>
+</header>
+<div class="progress"><span id="progressBar"></span></div>
+<div class="layout">
+<nav class="nav" id="nav"></nav>
+<main class="main" id="main"></main>
+</div>
+</div>
+<script>
+
+"use strict";
+const App=(()=>{
+ const state={page:0,score:0,radiusShells:3,selectedElement:17,trend:"radius",propertyDisplay:"ea",propertyElement:17};
+ const propertyElements = [{"z":1,"s":"H","p":1,"g":1,"ea":0.754,"en":2.2},{"z":2,"s":"He","p":1,"g":18,"ea":null,"en":null},{"z":3,"s":"Li","p":2,"g":1,"ea":0.618,"en":0.98},{"z":4,"s":"Be","p":2,"g":2,"ea":null,"en":1.57},{"z":5,"s":"B","p":2,"g":13,"ea":0.277,"en":2.04},{"z":6,"s":"C","p":2,"g":14,"ea":1.263,"en":2.55},{"z":7,"s":"N","p":2,"g":15,"ea":null,"en":3.04},{"z":8,"s":"O","p":2,"g":16,"ea":1.461,"en":3.44},{"z":9,"s":"F","p":2,"g":17,"ea":3.339,"en":3.98},{"z":10,"s":"Ne","p":2,"g":18,"ea":null,"en":null},{"z":11,"s":"Na","p":3,"g":1,"ea":0.548,"en":0.93},{"z":12,"s":"Mg","p":3,"g":2,"ea":null,"en":1.31},{"z":13,"s":"Al","p":3,"g":13,"ea":0.441,"en":1.61},{"z":14,"s":"Si","p":3,"g":14,"ea":1.385,"en":1.9},{"z":15,"s":"P","p":3,"g":15,"ea":0.746,"en":2.19},{"z":16,"s":"S","p":3,"g":16,"ea":2.077,"en":2.58},{"z":17,"s":"Cl","p":3,"g":17,"ea":3.617,"en":3.16},{"z":18,"s":"Ar","p":3,"g":18,"ea":null,"en":null},{"z":19,"s":"K","p":4,"g":1,"ea":0.501,"en":0.82},{"z":20,"s":"Ca","p":4,"g":2,"ea":null,"en":1},{"z":21,"s":"Sc","p":4,"g":3,"ea":0.188,"en":1.36},{"z":22,"s":"Ti","p":4,"g":4,"ea":0.079,"en":1.54},{"z":23,"s":"V","p":4,"g":5,"ea":0.525,"en":1.63},{"z":24,"s":"Cr","p":4,"g":6,"ea":0.666,"en":1.66},{"z":25,"s":"Mn","p":4,"g":7,"ea":null,"en":1.55},{"z":26,"s":"Fe","p":4,"g":8,"ea":0.163,"en":1.83},{"z":27,"s":"Co","p":4,"g":9,"ea":0.661,"en":1.88},{"z":28,"s":"Ni","p":4,"g":10,"ea":1.156,"en":1.91},{"z":29,"s":"Cu","p":4,"g":11,"ea":1.228,"en":1.9},{"z":30,"s":"Zn","p":4,"g":12,"ea":null,"en":1.65},{"z":31,"s":"Ga","p":4,"g":13,"ea":0.3,"en":1.81},{"z":32,"s":"Ge","p":4,"g":14,"ea":1.35,"en":2.01},{"z":33,"s":"As","p":4,"g":15,"ea":0.81,"en":2.18},{"z":34,"s":"Se","p":4,"g":16,"ea":2.021,"en":2.55},{"z":35,"s":"Br","p":4,"g":17,"ea":3.365,"en":2.96},{"z":36,"s":"Kr","p":4,"g":18,"ea":null,"en":3},{"z":37,"s":"Rb","p":5,"g":1,"ea":0.468,"en":0.82},{"z":38,"s":"Sr","p":5,"g":2,"ea":null,"en":0.95},{"z":39,"s":"Y","p":5,"g":3,"ea":0.307,"en":1.22},{"z":40,"s":"Zr","p":5,"g":4,"ea":0.426,"en":1.33},{"z":41,"s":"Nb","p":5,"g":5,"ea":0.893,"en":1.6},{"z":42,"s":"Mo","p":5,"g":6,"ea":0.746,"en":2.16},{"z":43,"s":"Tc","p":5,"g":7,"ea":0.55,"en":1.9},{"z":44,"s":"Ru","p":5,"g":8,"ea":1.05,"en":2.2},{"z":45,"s":"Rh","p":5,"g":9,"ea":1.137,"en":2.28},{"z":46,"s":"Pd","p":5,"g":10,"ea":0.557,"en":2.2},{"z":47,"s":"Ag","p":5,"g":11,"ea":1.302,"en":1.93},{"z":48,"s":"Cd","p":5,"g":12,"ea":null,"en":1.69},{"z":49,"s":"In","p":5,"g":13,"ea":0.3,"en":1.78},{"z":50,"s":"Sn","p":5,"g":14,"ea":1.2,"en":1.96},{"z":51,"s":"Sb","p":5,"g":15,"ea":1.07,"en":2.05},{"z":52,"s":"Te","p":5,"g":16,"ea":1.971,"en":2.1},{"z":53,"s":"I","p":5,"g":17,"ea":3.059,"en":2.66},{"z":54,"s":"Xe","p":5,"g":18,"ea":null,"en":2.6},{"z":55,"s":"Cs","p":6,"g":1,"ea":0.472,"en":0.79},{"z":56,"s":"Ba","p":6,"g":2,"ea":null,"en":0.89},{"z":57,"s":"La","p":6,"g":3,"ea":0.5,"en":1.1},{"z":58,"s":"Ce","p":6,"g":0,"ea":0.5,"en":1.12},{"z":59,"s":"Pr","p":6,"g":0,"ea":null,"en":1.13},{"z":60,"s":"Nd","p":6,"g":0,"ea":null,"en":1.14},{"z":61,"s":"Pm","p":6,"g":0,"ea":null,"en":null},{"z":62,"s":"Sm","p":6,"g":0,"ea":null,"en":1.17},{"z":63,"s":"Eu","p":6,"g":0,"ea":null,"en":null},{"z":64,"s":"Gd","p":6,"g":0,"ea":null,"en":1.2},{"z":65,"s":"Tb","p":6,"g":0,"ea":null,"en":null},{"z":66,"s":"Dy","p":6,"g":0,"ea":null,"en":1.22},{"z":67,"s":"Ho","p":6,"g":0,"ea":null,"en":1.23},{"z":68,"s":"Er","p":6,"g":0,"ea":null,"en":1.24},{"z":69,"s":"Tm","p":6,"g":0,"ea":null,"en":1.25},{"z":70,"s":"Yb","p":6,"g":0,"ea":null,"en":null},{"z":71,"s":"Lu","p":6,"g":0,"ea":null,"en":1.27},{"z":72,"s":"Hf","p":6,"g":4,"ea":null,"en":1.3},{"z":73,"s":"Ta","p":6,"g":5,"ea":0.322,"en":1.5},{"z":74,"s":"W","p":6,"g":6,"ea":0.815,"en":2.36},{"z":75,"s":"Re","p":6,"g":7,"ea":0.15,"en":1.9},{"z":76,"s":"Os","p":6,"g":8,"ea":1.1,"en":2.2},{"z":77,"s":"Ir","p":6,"g":9,"ea":1.565,"en":2.2},{"z":78,"s":"Pt","p":6,"g":10,"ea":2.128,"en":2.28},{"z":79,"s":"Au","p":6,"g":11,"ea":2.309,"en":2.54},{"z":80,"s":"Hg","p":6,"g":12,"ea":null,"en":2},{"z":81,"s":"Tl","p":6,"g":13,"ea":0.2,"en":1.62},{"z":82,"s":"Pb","p":6,"g":14,"ea":0.36,"en":2.33},{"z":83,"s":"Bi","p":6,"g":15,"ea":0.946,"en":2.02},{"z":84,"s":"Po","p":6,"g":16,"ea":1.9,"en":2},{"z":85,"s":"At","p":6,"g":17,"ea":2.8,"en":2.2},{"z":86,"s":"Rn","p":6,"g":18,"ea":null,"en":null},{"z":87,"s":"Fr","p":7,"g":1,"ea":0.47,"en":0.7},{"z":88,"s":"Ra","p":7,"g":2,"ea":null,"en":0.9},{"z":89,"s":"Ac","p":7,"g":3,"ea":null,"en":1.1},{"z":90,"s":"Th","p":7,"g":0,"ea":null,"en":1.3},{"z":91,"s":"Pa","p":7,"g":0,"ea":null,"en":1.5},{"z":92,"s":"U","p":7,"g":0,"ea":null,"en":1.38},{"z":93,"s":"Np","p":7,"g":0,"ea":null,"en":1.36},{"z":94,"s":"Pu","p":7,"g":0,"ea":null,"en":1.28},{"z":95,"s":"Am","p":7,"g":0,"ea":null,"en":1.3},{"z":96,"s":"Cm","p":7,"g":0,"ea":null,"en":1.3},{"z":97,"s":"Bk","p":7,"g":0,"ea":null,"en":1.3},{"z":98,"s":"Cf","p":7,"g":0,"ea":null,"en":1.3},{"z":99,"s":"Es","p":7,"g":0,"ea":null,"en":1.3},{"z":100,"s":"Fm","p":7,"g":0,"ea":null,"en":1.3},{"z":101,"s":"Md","p":7,"g":0,"ea":null,"en":1.3},{"z":102,"s":"No","p":7,"g":0,"ea":null,"en":1.3},{"z":103,"s":"Lr","p":7,"g":0,"ea":null,"en":1.3},{"z":104,"s":"Rf","p":7,"g":4,"ea":null,"en":null},{"z":105,"s":"Db","p":7,"g":5,"ea":null,"en":null},{"z":106,"s":"Sg","p":7,"g":6,"ea":null,"en":null},{"z":107,"s":"Bh","p":7,"g":7,"ea":null,"en":null},{"z":108,"s":"Hs","p":7,"g":8,"ea":null,"en":null},{"z":109,"s":"Mt","p":7,"g":9,"ea":null,"en":null},{"z":110,"s":"Ds","p":7,"g":10,"ea":null,"en":null},{"z":111,"s":"Rg","p":7,"g":11,"ea":null,"en":null},{"z":112,"s":"Cn","p":7,"g":12,"ea":null,"en":null},{"z":113,"s":"Nh","p":7,"g":13,"ea":null,"en":null},{"z":114,"s":"Fl","p":7,"g":14,"ea":null,"en":null},{"z":115,"s":"Mc","p":7,"g":15,"ea":null,"en":null},{"z":116,"s":"Lv","p":7,"g":16,"ea":null,"en":null},{"z":117,"s":"Ts","p":7,"g":17,"ea":null,"en":null},{"z":118,"s":"Og","p":7,"g":18,"ea":null,"en":null}];
+const pages = [
+  ["Capture","Temukan Polanya"],["Connect","Dari Atom ke SPU"],["Jari-jari","Lihat Ukurannya"],
+  ["Ionisasi","Lepaskan Elektron"],["Keelektronegatifan","Tarik Elektron"],
+  ["Afinitas","Terima Elektron"],["Data + Discovery","Peta Sifat Periodik"],
+  ["SPU","Jelajahi Tabel"],["Mystery","Unsur Misteri"],
+  ["Challenge","Chemical Prediction"],["Reflect","Refleksi"]
+];
+ const els=[
+ ["H","Hidrogen",1,1,"2","nonlogam"],["He","Helium",2,1,"2","gas mulia"],
+ ["Li","Litium",3,2,"1","logam"],["Be","Berilium",4,2,"2","logam"],["B","Boron",5,2,"3","metaloid"],["C","Karbon",6,2,"4","nonlogam"],["N","Nitrogen",7,2,"5","nonlogam"],["O","Oksigen",8,2,"6","nonlogam"],["F","Fluorin",9,2,"7","halogen"],["Ne","Neon",10,2,"8","gas mulia"],
+ ["Na","Natrium",11,3,"1","logam"],["Mg","Magnesium",12,3,"2","logam"],["Al","Aluminium",13,3,"3","logam"],["Si","Silikon",14,3,"4","metaloid"],["P","Fosfor",15,3,"5","nonlogam"],["S","Sulfur",16,3,"6","nonlogam"],["Cl","Klorin",17,3,"7","halogen"],["Ar","Argon",18,3,"8","gas mulia"],
+ ["K","Kalium",19,4,"1","logam"],["Ca","Kalsium",20,4,"2","logam"]
+ ];
+ const main=document.getElementById("main"),nav=document.getElementById("nav"),score=document.getElementById("score"),bar=document.getElementById("progressBar");
+ function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+ function renderNav(){
+   nav.innerHTML="";
+   let existing=document.getElementById("slideNav");
+   if(!existing){
+     existing=document.createElement("div");
+     existing.id="slideNav";
+     existing.className="slide-nav";
+     document.body.appendChild(existing);
+   }
+   existing.innerHTML=`
+     <button class="prev" id="prevBtn" type="button">‹ Prev</button>
+     <div class="counter">${state.page+1} / ${pages.length}</div>
+     <button class="next" id="nextBtn" type="button">Next ›</button>`;
+   document.getElementById("prevBtn").disabled=state.page===0;
+   document.getElementById("nextBtn").disabled=state.page===pages.length-1;
+   document.getElementById("prevBtn").onclick=()=>{if(state.page>0){state.page--;render()}};
+   document.getElementById("nextBtn").onclick=()=>{if(state.page<pages.length-1){state.page++;render()}};
+ }
+ function capture(){
+  main.innerHTML=`<div class="hero"><section class="card"><span class="pill">MISSION 01 · CAPTURE</span><h1>Lebih dari 100 unsur.<br>Di mana polanya?</h1><p class="lead">Bayangkan kamu menemukan banyak unsur dengan sifat yang berbeda. Ilmuwan membutuhkan cara untuk mengaturnya sehingga hubungan antarelemen dapat terlihat.</p><p><b>Prediksi:</b> apa dasar yang paling tepat untuk menyusun SPU modern?</p><div id="c1">
+   <button class="choice" data-value="massa">A. Massa atom</button><button class="choice" data-value="nomor">B. Nomor atom</button><button class="choice" data-value="warna">C. Warna unsur</button><button class="choice" data-value="wujud">D. Wujud unsur</button></div><div id="f1" class="feedback"></div></section>
+   <section class="card"><div class="eyebrow">Observe</div><h3>Kartu unsur acak</h3><div class="grid3">${els.slice(0,12).map(e=>`<div class="atom-card"><b>${esc(e[0])}</b><div class="small">Z = ${esc(e[2])}</div></div>`).join("")}</div><div class="cause"><span>unsur</span><b>?</b><span>urutan</span><b>?</b><span>pola</span></div><p class="small">Tujuan kita bukan menghafal posisi, tetapi menemukan alasan mengapa posisi tersebut bermakna.</p></section></div>`;
+  choice(document.getElementById("c1"),"nomor",()=>feedback("f1","good","<b>Tepat.</b> SPU modern disusun berdasarkan kenaikan nomor atom. Sekarang kita lihat apa yang terjadi pada elektron ketika nomor atom bertambah."),()=>feedback("f1","warn","Petunjuk: cari besaran yang menunjukkan jumlah proton dalam inti atom.")); 
+ }
+ function connect(){
+  main.innerHTML=`<section class="card"><span class="pill">MISSION 02 · CONNECT</span><h2 class="section-title">Nomor atom → elektron → posisi</h2><p class="lead">Gunakan pengetahuanmu tentang atom. Atom netral Na memiliki <b>Z = 11</b>.</p><div class="grid2"><div><p><b>Pertanyaan 1</b><br>Berapa jumlah elektronnya?</p><div id="c2"><button class="choice" data-value="1">1</button><button class="choice" data-value="11">11</button><button class="choice" data-value="22">22</button></div><div id="f2" class="feedback"></div></div><div class="card" style="box-shadow:none;margin:0;background:var(--surface2)"><div class="eyebrow">Scaffolding</div><p>Atom netral memiliki jumlah proton = jumlah elektron.</p><div class="cause"><span>Z = 11</span><b>→</b><span>11 proton</span><b>→</b><span>11 elektron</span></div><p class="small">Setelah itu, 11 elektron Na tersusun <b>2, 8, 1</b>. Angka terakhir akan sangat penting ketika kita membahas golongan.</p></div></div></section>`;
+  choice(document.getElementById("c2"),"11",()=>{feedback("f2","good","<b>Benar.</b> Pada atom netral, jumlah elektron sama dengan jumlah proton. <br><br><b>Konfigurasi Na: 2, 8, 1.</b> Tiga kulit → periode 3; satu elektron valensi → golongan 1." )},()=>feedback("f2","warn","Ingat: nomor atom menyatakan jumlah proton. Untuk atom netral, jumlah proton sama dengan jumlah elektron."));
+ }
+ function electronPositions(count,radius){
+   const pts=[];
+   if(!count)return pts;
+   for(let i=0;i<count;i++){
+     const angle=(-Math.PI/2)+(2*Math.PI*i/count);
+     pts.push([Math.cos(angle)*radius,Math.sin(angle)*radius]);
+   }
+   return pts;
+ }
+ function atomHTML(config,label,scaleClass=""){
+   const shells=Array.isArray(config)?config.length:0;
+   const shellR=[32,56,80,104];
+   let electrons=[];
+   (Array.isArray(config)?config:[]).forEach((count,si)=>{
+     const pts=electronPositions(count,shellR[si]);
+     pts.forEach((p,j)=>{
+       electrons.push(`<i class="electron" style="left:calc(50% + ${p[0]-5.5}px);top:calc(50% + ${p[1]-5.5}px)"></i>`);
+     });
+   });
+   return `<div class="mini-atom"><div class="atom ${scaleClass}" data-config="${config.join(',')}"><i class="nucleus">${esc(label)}</i>${[1,2,3,4].slice(0,shells).map(n=>`<i class="shell s${n}"></i>`).join("")}${electrons.join("")}</div></div>`
+ }
+ function radius(){
+  const s=state.radiusShells;
+  const configs={2:[2,8],3:[2,8,1],4:[2,8,8,1]};
+  const current=configs[s]||configs[3];
+  const label=s===2?'?':s===3?'Na':'K';
+  main.innerHTML=`<section class="card one-screen radius-slide">
+   <span class="pill">MISSION 03 · VISUALIZE</span>
+   <h2 class="section-title">Jari-jari atom: lihat bedanya 3 kulit dan 4 kulit</h2>
+   <p class="lead">Bandingkan <b>Na</b> dan <b>K</b>. Lalu ubah jumlah kulit sendiri untuk melihat apa yang berubah.</p>
+   <div class="grid3 radius-compare">
+    <div class="atom-card radius-card">
+      <div class="eyebrow">A · Na · 3 KULIT</div>
+      <div class="radius-atom">${atomHTML([2,8,1],"Na")}</div>
+      <div class="metric">2, 8, 1</div>
+      <div class="small">Elektron terluar berada pada <b>kulit ke-3</b>.</div>
+    </div>
+    <div class="atom-card radius-card">
+      <div class="eyebrow">B · K · 4 KULIT</div>
+      <div class="radius-atom">${atomHTML([2,8,8,1],"K")}</div>
+      <div class="metric">2, 8, 8, 1</div>
+      <div class="small">Elektron terluar berada pada <b>kulit ke-4</b>.</div>
+    </div>
+    <div class="atom-card radius-card radius-experiment">
+      <div class="eyebrow">C · UBAH JUMLAH KULIT</div>
+      <div class="experiment-top"><b id="shellLabel">${s} kulit</b><span class="trend-chip">coba 2 → 4</span></div>
+      <div id="dynamicAtom" class="radius-atom dynamic-radius-atom">${atomHTML(current,label)}</div>
+      <div class="experiment-config"><span id="dynamicConfig">${current.join(', ')}</span><span id="dynamicLabel">${s===2?'model':s===3?'Na':'K'}</span></div>
+      <input id="radSlider" class="slider" type="range" min="2" max="4" value="${s}" aria-label="Jumlah kulit atom">
+      <div class="slider-scale"><span>2</span><span>3</span><span>4 kulit</span></div>
+      <div class="cause compact-cause"><span>kulit ↑</span><b>→</b><span>e⁻ terluar makin jauh</span><b>→</b><span>radius ↑</span></div>
+    </div>
+   </div>
+   <div class="radius-predict"><b>Prediksi cepat: Na atau K yang radiusnya lebih besar?</b><div id="rQuiz"><button class="choice" data-value="Na">Na</button><button class="choice" data-value="K">K</button></div><div id="rf" class="feedback"></div></div>
+  </section>`;
+  const sl=document.getElementById("radSlider");
+  sl.oninput=()=>{
+    const v=+sl.value; state.radiusShells=v;
+    const cfg=configs[v]||configs[3];
+    const atomLabel=v===2?'?':v===3?'Na':'K';
+    document.getElementById("shellLabel").textContent=v+" kulit";
+    document.getElementById("dynamicConfig").textContent=cfg.join(', ');
+    document.getElementById("dynamicLabel").textContent=v===2?'model':atomLabel;
+    const holder=document.getElementById("dynamicAtom");
+    holder.innerHTML=atomHTML(cfg,atomLabel);
+    holder.classList.remove("radius-pulse");
+    void holder.offsetWidth;
+    holder.classList.add("radius-pulse");
+  };
+  choice(document.getElementById("rQuiz"),"K",()=>feedback("rf","good","<b>Tepat.</b> K memiliki 4 kulit, sedangkan Na memiliki 3. Elektron valensi K lebih jauh dari inti sehingga jari-jari atom K cenderung lebih besar."),()=>feedback("rf","warn","Bandingkan bukan jumlah elektronnya saja, tetapi <b>jumlah kulit</b>. K memiliki 4 kulit; Na memiliki 3."));
+ }
+ function ionization(){
+  main.innerHTML=`<section class="card one-screen ion-slide">
+    <span class="pill">MISSION 04 · VISUALIZE</span>
+    <h2 class="section-title">Energi ionisasi: mana yang lebih sulit dilepaskan?</h2>
+    <p class="lead">Bandingkan <b>Na</b> dan <b>K</b>. Fokus pada satu pertanyaan: <b>seberapa jauh elektron valensi dari inti?</b></p>
+
+    <div class="grid3 ion-compare">
+      <div class="atom-card ion-card">
+        <div class="ion-head"><div><div class="eyebrow">A · Na</div><b>2, 8, 1</b></div><span class="trend-chip">3 kulit</span></div>
+        <div class="atom-stage ion-stage" id="naIonStage">${atomHTML([2,8,1],"Na")}</div>
+        <div class="ion-note">e⁻ valensi <b>lebih dekat</b> ke inti</div>
+        <button id="pullNa" class="btn primary ion-btn" type="button">Tarik e⁻ Na</button>
+        <div id="naResult" class="feedback ion-feedback"></div>
+      </div>
+
+      <div class="atom-card ion-card">
+        <div class="ion-head"><div><div class="eyebrow">B · K</div><b>2, 8, 8, 1</b></div><span class="trend-chip">4 kulit</span></div>
+        <div class="atom-stage ion-stage" id="kIonStage">${atomHTML([2,8,8,1],"K")}</div>
+        <div class="ion-note">e⁻ valensi <b>lebih jauh</b> dari inti</div>
+        <button id="pullK" class="btn primary ion-btn" type="button">Tarik e⁻ K</button>
+        <div id="kResult" class="feedback ion-feedback"></div>
+      </div>
+
+      <div class="atom-card ion-card logic-card">
+        <div class="eyebrow">C · Hubungkan sebab → akibat</div>
+        <div class="logic-stack">
+          <div><strong>Na</strong><span>3 kulit</span><b>→</b><span>lebih dekat</span><b>→</b><span>lebih sulit dilepas</span></div>
+          <div><strong>K</strong><span>4 kulit</span><b>→</b><span>lebih jauh</span><b>→</b><span>lebih mudah dilepas</span></div>
+        </div>
+        <div class="ion-key"><span>Jarak ↑</span><b>→</b><span>tarikan relatif ↓</span><b>→</b><span>IE cenderung ↓</span></div>
+        <div id="iQuiz" class="ion-quiz">
+          <p><b>Prediksi:</b> siapa yang memerlukan energi ionisasi lebih besar?</p>
+          <button class="choice" data-value="Na">Na — e⁻ lebih dekat</button>
+          <button class="choice" data-value="K">K — e⁻ lebih jauh</button>
+        </div>
+        <div id="if" class="feedback"></div>
+      </div>
+    </div>
+
+    <div class="ion-takeaway"><b>Inti gagasan:</b> dalam satu golongan, kulit bertambah ke bawah → elektron valensi makin jauh dari inti → lebih mudah dilepaskan → energi ionisasi cenderung menurun.</div>
+  </section>`;
+
+  function pull(stageId,resultId,symbol){
+    const stage=document.getElementById(stageId), result=document.getElementById(resultId);
+    if(!stage||!result) return;
+    result.className="feedback show good";
+    result.innerHTML=`⚡ Elektron valensi <b>${esc(symbol)}</b> ditarik menjauh. Jarak dari inti membantu menjelaskan kemudahan pelepasan.`;
+    const dots=stage.querySelectorAll(".electron");
+    if(dots.length){const last=dots[dots.length-1];last.style.transition="transform .7s ease,opacity .7s ease";last.style.transform="translate(42px,-7px) scale(1.18)";last.style.opacity=".12";}
+  }
+  document.getElementById("pullNa").onclick=()=>pull("naIonStage","naResult","Na");
+  document.getElementById("pullK").onclick=()=>pull("kIonStage","kResult","K");
+  choice(document.getElementById("iQuiz"),"Na",
+    ()=>feedback("if","good","<b>Tepat.</b> Na memiliki 3 kulit, sedangkan K memiliki 4. Elektron valensi Na lebih dekat ke inti sehingga secara umum lebih sulit dilepaskan.") ,
+    ()=>feedback("if","warn","Bandingkan jumlah kulit: Na = 3, K = 4. Elektron yang lebih jauh dari inti umumnya lebih mudah dilepaskan.")
+  );
+ }
+ function electro(){
+  main.innerHTML=`<section class="card one-screen"><span class="pill">MISSION 05 · VISUALIZE</span>
+  <h2 class="section-title">Keelektronegatifan: tarik pasangan elektron</h2>
+  <p class="lead">Bayangkan H dan Cl sedang berbagi satu pasangan elektron. <b>Siapa yang menariknya lebih kuat?</b></p>
+  <div class="atom-stage" style="min-height:230px">
+    <div style="display:flex;align-items:center;gap:34px;font-size:27px;font-weight:800">
+      <span>H</span><span id="pair" style="display:inline-block;letter-spacing:7px;transition:transform .35s ease">••</span><span>Cl</span>
+    </div>
+    <div class="atom-label">Pasangan elektron ikatan</div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:700"><span>tarikan lebih kuat ke H</span><span>tarikan lebih kuat ke Cl</span></div>
+  <input id="enSlider" class="slider" type="range" min="0" max="100" value="70">
+  <div id="enText" class="feedback show" style="display:block;background:var(--surface2);color:var(--text)">Pada contoh H—Cl, pasangan elektron lebih tertarik ke Cl.</div>
+  <div id="eQuiz"><p><b>Prediksi:</b> jika atom lebih elektronegatif, pasangan elektron ikatan cenderung bergeser...</p>
+    <button class="choice" data-value="lebih">mendekati atom tersebut</button>
+    <button class="choice" data-value="acak">tanpa kecenderungan</button>
+  </div><div id="ef" class="feedback"></div>
+  <div class="small"><b>Kunci:</b> keelektronegatifan = kecenderungan atom dalam suatu ikatan untuk menarik pasangan elektron ikatan ke arahnya.</div></section>`;
+  const sl=document.getElementById("enSlider"),pair=document.getElementById("pair"),txt=document.getElementById("enText");
+  sl.oninput=()=>{let v=+sl.value;pair.style.transform=`translateX(${(v-50)*1.8}px)`;
+    txt.innerHTML=v<40?"Pasangan elektron lebih tertarik ke H.":v<60?"Pasangan elektron relatif berada di tengah.":"Pasangan elektron lebih tertarik ke Cl."};
+  choice(document.getElementById("eQuiz"),"lebih",
+    ()=>feedback("ef","good","<b>Benar.</b> Keelektronegatifan menjelaskan kecenderungan atom menarik pasangan elektron dalam ikatan."),
+    ()=>feedback("ef","warn","Fokus pada pasangan elektron yang sedang dibagi dalam ikatan. Atom yang lebih elektronegatif menarik pasangan tersebut lebih kuat.")
+  );
+ }
+ function affinity(){
+  main.innerHTML=`<section class="card one-screen"><span class="pill">MISSION 06 · EXPLORE</span><h2 class="section-title">Afinitas elektron: lihat 1 elektron benar-benar bertambah</h2><p class="lead">Perhatikan kulit terluar Cl. <b>7 elektron lama</b> akan menerima <b>1 elektron baru</b> yang sengaja diberi warna berbeda.</p>
+  <div class="grid2">
+   <div class="atom-stage" id="affAtomStage">${atomHTML([2,8,7],"Cl")}<div class="atom-label">Awal: 2, 8, 7 → 7 e⁻ valensi</div></div>
+   <div>
+    <button id="addElectron" class="btn primary">＋ Tambahkan 1 e⁻</button>
+    <div id="affBox" class="feedback show" style="display:block;background:var(--surface2);color:var(--text);margin-top:8px"><b>Amati:</b> elektron baru belum masuk. Setelah diklik, satu elektron akan bergerak ke kulit terluar dan diberi warna berbeda.</div>
+    <div class="cause"><span>7 e⁻ valensi</span><b>+</b><span style="background:#fff0d9;border:1px solid #f0c36a;padding:5px 7px;border-radius:8px;font-weight:800">1 e⁻ baru</span><b>→</b><span>8 e⁻ valensi</span></div>
+    <div id="afterConfig" class="metric" style="margin-top:7px">2, 8, 7</div>
+    <div class="small">Warna oranye/kuning = <b>elektron yang baru ditambahkan</b>.</div>
+   </div>
+  </div>
+  <div class="card" style="box-shadow:none;background:var(--surface2);margin-top:8px">
+    <div class="eyebrow">Hubungkan visual → simbol</div>
+    <div class="cause"><span>Cl</span><b>+</b><span>e⁻</span><b>→</b><span>Cl⁻</span><b>;</b><span>2,8,7 → 2,8,8</span></div>
+    <div class="small">Afinitas elektron berkaitan dengan perubahan energi ketika atom netral menerima elektron. Nilainya tidak sama dengan keelektronegatifan.</div>
+  </div>
+  <div id="aQuiz"><p><b>Cocokkan konteks:</b> “atom menarik pasangan elektron dalam ikatan” adalah...</p><button class="choice" data-value="en">Keelektronegatifan</button><button class="choice" data-value="ea">Afinitas elektron</button></div><div id="af" class="feedback"></div>
+  <div class="small"><b>Catatan:</b> pola afinitas elektron tidak sesederhana satu panah untuk semua unsur. Data kosong/— berarti sumber tabel tidak mencantumkan nilai.</div></section>`;
+
+  const stage=document.getElementById("affAtomStage");
+  const button=document.getElementById("addElectron");
+  button.onclick=()=>{
+    if(button.dataset.done==="1") return;
+    button.dataset.done="1";
+    const atom=stage.querySelector(".atom");
+    const incoming=document.createElement("i");
+    incoming.className="electron new-electron";
+    incoming.style.cssText="left:calc(50% + 126px);top:calc(50% - 5.5px);background:#f0a11a;box-shadow:0 0 0 4px rgba(240,161,26,.18),0 3px 9px rgba(240,161,26,.35);opacity:0;transform:scale(.7)";
+    atom.appendChild(incoming);
+    requestAnimationFrame(()=>{incoming.style.transition="left .9s cubic-bezier(.2,.8,.2,1),top .9s cubic-bezier(.2,.8,.2,1),opacity .25s,transform .25s";incoming.style.left="calc(50% + 74.5px)";incoming.style.top="calc(50% - 5.5px)";incoming.style.opacity="1";incoming.style.transform="scale(1.2)"});
+    setTimeout(()=>{
+      incoming.style.left="calc(50% + 45px)";
+      incoming.style.top="calc(50% - 45px)";
+      incoming.style.transform="scale(1)";
+      document.getElementById("afterConfig").textContent="2, 8, 8";
+      document.getElementById("affBox").className="feedback show good";
+      document.getElementById("affBox").innerHTML="<b>Elektron baru masuk.</b> Sekarang kulit terluar Cl memiliki <b>8 elektron</b>. Perhatikan warna oranye: itulah 1 elektron yang baru ditambahkan.";
+      button.textContent="✓ 1 e⁻ sudah ditambahkan";
+    },900);
+  };
+  choice(document.getElementById("aQuiz"),"en",
+    ()=>feedback("af","good","<b>Benar.</b> Keelektronegatifan = menarik pasangan elektron dalam ikatan. Afinitas elektron = perubahan energi saat atom netral menerima elektron."),
+    ()=>feedback("af","warn","Cari kata kunci: <b>pasangan elektron dalam ikatan</b> → keelektronegatifan; <b>atom menerima elektron</b> → afinitas elektron.")
+  );
+ }
+ function propertyTable(){
+   const display=state.propertyDisplay||"ea";
+   const labels={ea:"Afinitas Elektron",en:"Keelektronegatifan",both:"Afinitas Elektron + Keelektronegatifan"};
+   const definition=display==="ea" ? "Afinitas elektron berkaitan dengan perubahan energi ketika atom netral menerima satu elektron dan membentuk ion negatif." : display==="en" ? "Keelektronegatifan adalah kecenderungan atom dalam suatu ikatan untuk menarik pasangan elektron ikatan ke arahnya." : "Keduanya berbeda: afinitas elektron membahas perubahan energi saat atom menerima elektron, sedangkan keelektronegatifan membahas tarikan pasangan elektron dalam ikatan.";
+   const trend=display==="ea" ? "Pola afinitas elektron cenderung lebih besar ke kanan/atas, tetapi memiliki banyak pengecualian." : display==="en" ? "Keelektronegatifan secara umum meningkat dari kiri ke kanan dan dari bawah ke atas." : "Bandingkan arah keduanya: keelektronegatifan lebih teratur; afinitas elektron memiliki lebih banyak pengecualian.";
+   const value=(e,key)=>e[key]==null?"—":Number(e[key]).toFixed(2);
+   const cell=(e)=>{
+     const selected=state.propertyElement===e.z?" selected":"";
+     const missing=(display!=="both" && (e[display]===null||e[display]===undefined))?" missing":"";
+     const values=display==="both" ? `<div class="both-line" style="color:var(--primary)">EA ${value(e,"ea")}</div><div class="both-line" style="color:var(--good)">EN ${value(e,"en")}</div>` : `<div class="pv">${value(e,display)}</div>`;
+     return `<button class="property-cell${selected}${missing}" data-pz="${e.z}" title="${esc(e.s)} · Z=${e.z}"><div class="pz">${e.z}</div><div class="ps">${esc(e.s)}</div>${values}</button>`;
+   };
+   const cellsHtml=propertyElements.filter(e=>e.g>0).map(e=>`<div style="grid-column:${e.g};grid-row:${e.p}">${cell(e)}</div>`).join("");
+   const lan=propertyElements.filter(e=>e.z>=58&&e.z<=71), act=propertyElements.filter(e=>e.z>=90&&e.z<=103);
+   const frow=(label,arr)=>`<div class="fblock-row"><div class="flabel">${esc(label)}</div>${arr.map(e=>`<div>${cell(e)}</div>`).join("")}</div>`;
+   const e=propertyElements.find(x=>x.z===state.propertyElement)||propertyElements.find(x=>x.z===17);
+   const eaText=e.ea==null?"Data tidak tersedia":`${Number(e.ea).toFixed(3)} eV`, enText=e.en==null?"Data tidak tersedia":`${Number(e.en).toFixed(2)} Pauling`;
+   main.innerHTML=`<section class="card one-screen property-screen"><span class="pill">MISSION 07 · DATA + DISCOVERY</span><h2 class="section-title">Peta Afinitas Elektron & Keelektronegatifan</h2><p class="lead">Gunakan <b>tiga tombol</b> untuk mengganti data pada <b>tabel yang sama</b>. Klik unsur untuk melihat detailnya.</p><div class="property-switch"><button data-prop="ea" class="${display==="ea"?"active":""}">Afinitas Elektron</button><button data-prop="en" class="${display==="en"?"active":""}">Keelektronegatifan</button><button data-prop="both" class="${display==="both"?"active":""}">Tampilkan Keduanya</button></div><div class="property-table-wrap"><div class="property-grid">${cellsHtml}</div><div class="fblock">${frow("Ln",lan)}${frow("An",act)}</div></div><div class="property-info"><div><div class="eyebrow">Unsur dipilih</div><div class="big">${esc(e.s)} <span class="muted">Z = ${e.z}</span></div><div class="small">${display==="both"?`EA: <b>${eaText}</b> · EN: <b>${enText}</b>`:display==="ea"?`EA: <b>${eaText}</b>`:`EN: <b>${enText}</b>`}</div></div><div><div class="eyebrow">${labels[display]}</div><div class="small">Klik sel lain untuk membandingkan data unsur.</div></div></div><div class="trend-map"><div class="definition"><b>Makna:</b> ${definition}</div><div class="arrow">↗</div><div class="definition"><b>Pola:</b> ${trend}</div></div></section>`;
+   document.querySelectorAll("[data-prop]").forEach(btn=>btn.onclick=()=>{state.propertyDisplay=btn.dataset.prop;propertyTable();});
+   document.querySelectorAll("[data-pz]").forEach(btn=>btn.onclick=()=>{state.propertyElement=+btn.dataset.pz;propertyTable();});
+ }
+ function periodic(){
+  const mainCells=propertyElements.filter(e=>e.g>0).map(e=>`<div style="grid-column:${e.g};grid-row:${e.p}">${periodicCell(e)}</div>`).join("");
+  const lan=propertyElements.filter(e=>e.z>=58&&e.z<=71);
+  const act=propertyElements.filter(e=>e.z>=90&&e.z<=103);
+  const frow=(label,arr)=>`<div class="full-fblock"><div class="full-f-label">${label}</div>${arr.map(e=>`<div>${periodicCell(e)}</div>`).join("")}</div>`;
+  main.innerHTML=`<section class="card one-screen full-periodic-screen">
+    <span class="pill">MISSION 08 · EXPLORE</span>
+    <h2 class="section-title">Jelajahi Tabel Periodik Unsur</h2>
+    <p class="lead">Klik unsur untuk menghubungkan <b>nomor atom → posisi → sifat periodik</b>. Tabel ini memuat seluruh <b>118 unsur</b>.</p>
+    <div class="periodic-wrap">
+      <div class="full-periodic-grid">${mainCells}</div>
+      ${frow("Ln",lan)}
+      ${frow("An",act)}
+    </div>
+    <div id="elementInfo" class="periodic-info"></div>
+    <div class="periodic-hint">Klik unsur lain untuk membandingkan posisi dan data. Unsur blok-f ditampilkan pada dua baris di bawah tabel utama.</div>
+  </section>`;
+  document.querySelectorAll(".element[data-z]").forEach(b=>b.onclick=()=>{state.selectedElement=+b.dataset.z;periodic()});
+  showElement(state.selectedElement);
+ }
+ function periodicCell(e){
+  return `<button class="element ${e.z===state.selectedElement?"active":""}" data-z="${e.z}" title="${esc(e.s)} · Z=${e.z}"><div class="z">${e.z}</div><div class="sym">${esc(e.s)}</div></button>`;
+ }
+ function showElement(z){
+  const e=propertyElements.find(x=>x.z===z)||propertyElements[0];
+  const location=e.g>0?`Golongan ${e.g}`:"Blok-f";
+  const ea=e.ea==null?"—":Number(e.ea).toFixed(3)+" eV";
+  const en=e.en==null?"—":Number(e.en).toFixed(2)+" Pauling";
+  document.getElementById("elementInfo").innerHTML=`<div><div class="selected-symbol">${esc(e.s)}</div><div class="selected-name">Unsur · nomor atom ${e.z}</div></div><div><div class="info-facts"><span>Periode ${e.p}</span><span>${location}</span><span>EA ${ea}</span><span>EN ${en}</span></div><div class="small" style="margin-top:5px">Gunakan posisi unsur ini untuk menghubungkan data dengan kecenderungan periodik.</div></div>`;
+ }
+ function mystery(){
+  main.innerHTML=`<section class="card"><span class="pill">MISSION 09 · MYSTERY ELEMENT</span><h2 class="section-title">Siapa unsur misteri ini?</h2><p class="lead">Buka petunjuk satu per satu. Jangan langsung menebak.</p><div id="clues" class="grid2"><div class="card" style="box-shadow:none"><div class="eyebrow">Petunjuk 1</div><h3>Z = 17</h3><p class="small">Nomor atomnya 17.</p></div><div class="card" style="box-shadow:none"><div class="eyebrow">Petunjuk 2</div><h3>2, 8, 7</h3><p class="small">Konfigurasi elektronnya.</p></div><div class="card" style="box-shadow:none"><div class="eyebrow">Petunjuk 3</div><h3>3 kulit</h3><p class="small">Berarti periode 3.</p></div><div class="card" style="box-shadow:none"><div class="eyebrow">Petunjuk 4</div><h3>7 valensi</h3><p class="small">Golongan utama 17.</p></div></div><p><b>Pilih identitas unsur:</b></p><div id="mQuiz"><button class="choice" data-value="Cl">Cl — Klorin</button><button class="choice" data-value="Na">Na — Natrium</button><button class="choice" data-value="Ar">Ar — Argon</button></div><div id="mf" class="feedback"></div></section>`;
+  choice(document.getElementById("mQuiz"),"Cl",()=>feedback("mf","good","<b>IDENTITAS TERUNGKAP.</b> Z = 17 adalah Cl. Dari nomor atom → konfigurasi → periode → elektron valensi → golongan, kamu membangun identitas unsur tanpa menghafal posisinya."),()=>feedback("mf","warn","Gunakan semua petunjuk. Terutama Z = 17 dan konfigurasi 2,8,7."));
+ }
+ function challenge(){
+  main.innerHTML=`<section class="card"><span class="pill">MISSION 10 · CHALLENGE</span><h2 class="section-title">Chemical Prediction Challenge</h2><p class="lead">X berada pada periode 3. Y berada pada periode 3 tetapi lebih ke kanan daripada X.</p><div class="card" style="box-shadow:none;background:var(--surface2)"><p><b>Prediksi:</b> dibandingkan X, Y secara umum memiliki...</p><div id="ch"><button class="choice" data-value="r">jari-jari atom lebih besar</button><button class="choice" data-value="l">jari-jari atom lebih kecil</button></div><div id="chf" class="feedback"></div></div><div class="card" style="box-shadow:none"><div class="eyebrow">Scaffolding</div><p>Jika masih bingung:</p><ol class="small"><li>Dalam satu periode, jumlah kulit utama tetap.</li><li>Ke kanan, jumlah proton bertambah.</li><li>Tarikan inti efektif terhadap elektron cenderung meningkat.</li><li>Elektron tertarik lebih kuat → radius cenderung mengecil.</li></ol><div class="cause"><span>ke kanan</span><b>→</b><span>tarikan inti efektif ↑</span><b>→</b><span>radius atom ↓</span></div></div></section>`;
+  choice(document.getElementById("ch"),"l",()=>feedback("chf","good","<b>Benar.</b> Dalam satu periode, jari-jari atom secara umum cenderung mengecil dari kiri ke kanan karena muatan inti efektif meningkat."),()=>feedback("chf","warn","Kulit utama tetap. Bandingkan jumlah proton dan kekuatan tarikan inti efektif terhadap elektron."));
+ }
+ function reflect(){
+  const mainTable = propertyElements.filter(e=>e.p<=7 && e.g>0).map(e=>`
+    <div style="grid-column:${e.g};grid-row:${e.p}">
+      <div class="trend-element" title="${esc(e.s)} · Z=${e.z}">
+        <span>${esc(e.s)}</span><small>${e.z}</small>
+      </div>
+    </div>`).join("");
+  const lan = propertyElements.filter(e=>e.z>=58 && e.z<=71).map(e=>`<div class="trend-element f"><span>${esc(e.s)}</span><small>${e.z}</small></div>`).join("");
+  const act = propertyElements.filter(e=>e.z>=90 && e.z<=103).map(e=>`<div class="trend-element f"><span>${esc(e.s)}</span><small>${e.z}</small></div>`).join("");
+  main.innerHTML=`<section class="card one-screen trend-summary-screen">
+   <span class="pill">MISSION 11 · CONCLUSION & REFLECT</span>
+   <h2 class="section-title">Baca Tabel Periodik sebagai peta kecenderungan</h2>
+   <p class="lead">Sekarang lihat <b>Tabel Periodik Unsur</b> sebagai peta. Arah panah menunjukkan kecenderungan umum—bukan aturan mutlak.</p>
+
+   <div class="trend-map-card">
+     <div class="trend-legend-top">
+       <div class="trend-direction radius-dir"><b>Jari-jari atom</b><span>membesar ↙</span></div>
+       <div class="trend-direction ion-dir"><b>Energi ionisasi</b><span>meningkat ↗</span></div>
+       <div class="trend-direction en-dir"><b>Keelektronegatifan</b><span>meningkat ↗</span></div>
+       <div class="trend-direction metal-dir"><b>Sifat logam</b><span>meningkat ↙</span></div>
+     </div>
+
+     <div class="trend-annotation-top"><span class="arrow">↗</span><b>EN + energi ionisasi meningkat ke arah atas-kanan</b></div>
+     <div class="trend-table-area">
+       <div class="trend-periodic-grid">${mainTable}</div>
+       <div class="trend-fblock"><div class="f-name">La–Lu</div>${lan}</div>
+       <div class="trend-fblock"><div class="f-name">Ac–Lr</div>${act}</div>
+     </div>
+     <div class="trend-annotation-bottom"><span class="arrow">↙</span><b>Jari-jari atom + sifat logam meningkat ke arah bawah-kiri</b></div>
+
+     <div class="trend-key">
+       <span><i class="dot radius"></i><b>Radius atom</b> → cenderung membesar ke bawah-kiri</span>
+       <span><i class="dot energy"></i><b>IE & EN</b> → cenderung meningkat ke atas-kanan</span>
+       <span><i class="dot metal"></i><b>Sifat logam</b> → cenderung meningkat ke bawah-kiri</span>
+     </div>
+   </div>
+
+   <div class="reflect-bottom">
+     <div class="card meaning-card">
+       <div class="eyebrow">CARA MEMBACA</div>
+       <div class="cause"><span>ke bawah</span><b>→</b><span>kulit bertambah</span><b>→</b><span>radius ↑</span></div>
+       <div class="cause"><span>ke kanan</span><b>→</b><span>tarikan inti efektif ↑</span><b>→</b><span>radius ↓</span></div>
+       <p class="small"><b>Intinya:</b> pahami apa yang terjadi pada elektron, lalu gunakan SPU untuk memprediksi.</p>
+     </div>
+     <div class="reflection">
+       <label>Bagian mana yang sekarang paling kamu pahami?</label>
+       <textarea placeholder="Tuliskan dengan bahasamu sendiri..."></textarea>
+       <label>Apa yang masih membingungkan?</label>
+       <textarea placeholder="Tuliskan bagian yang ingin kamu pelajari lagi..."></textarea>
+     </div>
+   </div>
+   <div class="small trend-note"><b>Catatan:</b> tren periodik adalah kecenderungan umum. Afinitas elektron dan beberapa nilai energi ionisasi memiliki pengecualian karena struktur elektron.</div>
+  </section>`;
+ }
+
+ function choice(container,correct,onCorrect,onWrong){
+   if(!container) return;
+   const buttons=container.querySelectorAll(".choice");
+   let solved=false;
+   buttons.forEach(button=>{
+     button.addEventListener("click",()=>{
+       if(solved) return;
+       const value=String(button.dataset.value ?? "");
+       const expected=String(correct ?? "");
+       const isCorrect=value===expected;
+
+       buttons.forEach(b=>b.classList.remove("correct","wrong"));
+       button.classList.add(isCorrect ? "correct" : "wrong");
+
+       if(isCorrect){
+         solved=true;
+         setScore(10);
+         if(typeof onCorrect==="function") onCorrect(button);
+       }else{
+         if(typeof onWrong==="function") onWrong(button);
+       }
+     });
+   });
+ }
+
+ function setScore(points){
+   const n=Number(points)||0;
+   state.score+=n;
+   if(score) score.textContent=state.score+" XP";
+ }
+
+ function feedback(id,type,msg){
+   const element=document.getElementById(id);
+   if(!element) return;
+   element.className="feedback show "+type;
+   element.innerHTML=msg;
+ }
+
+ function render(){
+   renderNav();
+   bar.style.width=((state.page+1)/pages.length*100)+"%";
+   const views=[capture,connect,radius,ionization,electro,affinity,propertyTable,periodic,mystery,challenge,reflect];
+   if(typeof views[state.page]==="function"){
+     views[state.page]();
+   }else{
+     main.innerHTML=`<section class="card"><h2 class="section-title">Aktivitas belum tersedia</h2><p class="lead">Silakan kembali ke aktivitas sebelumnya.</p></section>`;
+   }
+ }
+
+ document.addEventListener("keydown",e=>{
+   if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName)) return;
+   if(e.key==="ArrowRight" && state.page<pages.length-1){state.page++;render();}
+   if(e.key==="ArrowLeft" && state.page>0){state.page--;render();}
+ });
+
+ return {render};
+})();
+App.render();
+
+(function setupFullscreen(){
+  const btn=document.getElementById("fullscreenBtn");
+  if(!btn) return;
+
+  const setState=()=>{
+    const active=!!document.fullscreenElement;
+    btn.innerHTML=active?"⛶ Keluar Fullscreen":"⛶ Fullscreen";
+    btn.setAttribute("aria-label",active?"Keluar dari fullscreen":"Aktifkan fullscreen");
+    btn.classList.toggle("fullscreen-btn-active",active);
+  };
+
+  btn.addEventListener("click",async()=>{
+    try{
+      if(!document.fullscreenElement){
+        await document.documentElement.requestFullscreen();
+      }else{
+        await document.exitFullscreen();
+      }
+    }catch(err){
+      btn.title="Fullscreen diblokir browser. Gunakan F11.";
+    }
+    setState();
+  });
+
+  document.addEventListener("fullscreenchange",setState);
+  setState();
+})();
+
+window.addEventListener("error",function(ev){
+  const main=document.getElementById("main");
+  if(main && ev.error){
+    const existing=document.getElementById("runtimeError");
+    if(!existing){
+      const box=document.createElement("div");
+      box.id="runtimeError";
+      box.style.cssText="position:fixed;right:14px;bottom:62px;z-index:9999;max-width:420px;background:#fff;border:1px solid #f0caca;border-radius:14px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.12);font:600 12px/1.5 system-ui;color:#8d241e";
+      box.innerHTML="<b>Aktivitas mengalami kesalahan kecil.</b><br>"+String(ev.error.message||ev.message).replace(/[<>&"]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]});
+      document.body.appendChild(box);
+    }
+  }
+});
+
+</script>
+</body>
+</html>
